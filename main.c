@@ -6,7 +6,7 @@
 /*   By: djoye <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 10:59:49 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/05 18:52:04 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/05 18:57:49 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ int			main(int argc, char **argv)
 	int			count_stack;
 	t_stack		*stack;
 	t_stack		*last;
+	t_stack		*test;
 	int			min;
 	int			max;
 	int			med;
@@ -120,7 +121,10 @@ int			main(int argc, char **argv)
 				nb = nb * 10 + argv[1][i++] - '0';
 			i--;
 			if (!stack)
+			{
 				stack = add_list(nb);
+				test = stack;
+			}
 			else
 			{
 				last = add_list(nb);
@@ -132,8 +136,9 @@ int			main(int argc, char **argv)
 		i++;
 	}
 	last = stack;
-	while (stack->prev)
-		stack = stack->prev;
+//	while (stack->prev)
+//		stack = stack->prev;
+	stack = test;
 	count_stack = 0;
 	printf("%d sort\n", if_sort(stack, 0));
 	min = ft_min(stack);
