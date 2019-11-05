@@ -6,36 +6,13 @@
 /*   By: djoye <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 10:59:49 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/04 17:44:20 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/05 18:52:04 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
+#include "push_swap.h"
 
-int			if_sort(int *nbr, int route, int count)
-{
-	int		i;
-
-	i = 0;
-	while (++i < count)
-		if (((route == 1) ? (nbr[i - 1] > nbr[i]) : (nbr[i - 1] < nbr[i])))
-			return (0);
-	return (1);
-}
-
-int			sa(int *nbr, int count)//верхние
-{
-	int		tmp;
-
-	tmp = nbr[0];
-	nbr[0] = nbr[1];
-	nbr[1] = tmp;
-	return (write(1, "sa\n", 3));
-}
-
-int			pa(int *nbr, int *stack, int count, int count_stack)
+/*int			pb(int *nbr, int *stack, int count, int count_stack)
 {
 	int		tmp;
 	int		i;
@@ -47,54 +24,198 @@ int			pa(int *nbr, int *stack, int count, int count_stack)
 	i = -1;
 	if (count_stack > 0)
 		while(++i < count_stack)
-			stack[i + 1] = stack[i]; 
+			stack[i + 1] = stack[i];
 	stack[0] = tmp;
-	return (write(1, "pa\n", 3));
+	return (write(1, "pb\n", 3));
 }
 
-int			ra(int *nbr, int count)// первый вниз
+int			pa(int *nbr, int *stack, int count, int count_stack)
 {
 	int		tmp;
 	int		i;
 
 	i = -1;
-	tmp = nbr[0];
-	while (++i < count - 1)
-		nbr[i] = nbr[i + 1];
-	nbr[i] = tmp;
-	return (write(1, "ra\n", 3));
+	tmp = stack[0];
+	while (++i < count_stack)
+		stack[i] = stack[i + 1];
+	i = -1;
+	if (count > 0)
+		while(++i < count - count_stack)
+			nbr[i + 1] = nbr[i];
+	nbr[0] = tmp;
+	return (write(1, "pa\n", 3));
 }
 
-int			rra(int *nbr, int count)// последний вверх
+int			criteria(int *nbr, int *stack, int count, int count_stack)
 {
-	int		tmp;
+	int		min;
+	int		max;
+	int		med;
 
-	tmp = nbr[count - 1];
-	while (--count > 0)
-		nbr[count] = nbr[count - 1];
-	nbr[count] = tmp;
-	return (write(1, "rra\n", 4));
+	min = ft_min(nbr, count);
+	max = ft_max(nbr, count);
+	med = ft_med(nbr, count, min, max);
+	if (nbr[0] == max)
+		ra(nbr, count);
+	else if (nbr[count - 1] == min)
+		rra(nbr, count);
+	else if (nbr[0] > nbr[1] && nbr[0] < med && nbr[count - 1] > nbr[1])
+		sa(nbr, count);
+	else if (nbr[0] > nbr[count - 1] && nbr[0] > med)
+		ra(nbr, count);
+	else if (nbr[count - 1] < med && nbr[count - 1] < nbr[0])
+		rra(nbr, count);
+	else if (if_sort(nbr, 1, count) == 0)
+	{
+		pb(nbr, stack, count, count_stack);
+		count_stack++;
+		printf("%d \ntest pb\n", stack[0]);
+	}
+	else if (if_sort(nbr, 1, count) == 1 && count_stack > 0 && if_sort(stack, -1, count_stack) == 1)
+	{
+		pa(nbr, stack, count, count_stack);
+		count_stack--;
+		printf("%d \ntest pa\n", stack[0]);
+	}
+
+	return (count_stack);
+}
+*/
+
+t_stack		*add_list(int nb)
+{
+	t_stack	*stack;
+
+	stack = NULL;
+	stack = (t_stack *)malloc(sizeof(t_stack));
+	stack->val = nb;
+	stack->prev = NULL;
+	stack->next = NULL;
+	return (stack);
 }
 
-int			ft_med(int *nbr, int count, int min, int max)
+int			main(int argc, char **argv)
+{
+	int			i;
+	int			c;
+	int			nb;
+	int			count_stack;
+	t_stack		*stack;
+	t_stack		*last;
+	int			min;
+	int			max;
+	int			med;
+
+	if (argc == 1)
+		return (0);
+	i = 0;
+	last = NULL;
+	stack = NULL;
+	while (argv[1][i])
+	{
+		if (argv[1][i] >= '0' && argv[1][i] <= '9')
+		{
+			nb = 0;
+			while (argv[1][i] >= '0' && argv[1][i] <= '9')
+				nb = nb * 10 + argv[1][i++] - '0';
+			i--;
+			if (!stack)
+				stack = add_list(nb);
+			else
+			{
+				last = add_list(nb);
+				stack->next = last;
+				last->prev = stack;
+				stack = last;
+			}
+		}
+		i++;
+	}
+	last = stack;
+	while (stack->prev)
+		stack = stack->prev;
+	count_stack = 0;
+	printf("%d sort\n", if_sort(stack, 0));
+	min = ft_min(stack);
+	max = ft_max(stack);
+	med = ft_med(stack, min, max);
+	printf("%d min %d max %d med\n", min, max, med);
+	stack = rra(stack, last);
+	while (stack)
+	{
+		printf("%d\n", stack->val);
+		stack = stack->next;
+	}
+/*	}
+	while (if_sort(nbr, 1, c) == 0 ||
+	if_sort(stack, -1, count_stack) == 0 || count_stack != 0)
+	{
+	count_stack = criteria(nbr, stack, c, count_stack)
+//	printf("\n%d\n", if_sort(nbr, 1, c));*/
+	return (0);
+}
+
+int			if_sort(t_stack *stack, int route)
+{
+	while (stack->next)
+	{
+		if (route == 1 ? stack->val > stack->next->val :
+				stack->next->val > stack->val)
+			return (0);
+		stack = stack->next;
+	}
+	return (1);
+}
+
+int			ft_min(t_stack *stack)
+{
+	int		min;
+
+	min = stack->val;
+	while (stack)
+	{
+		if (stack->val < min)
+			min = stack->val;
+		stack = stack->next;
+	}
+	return (min);
+}
+
+int			ft_max(t_stack *stack)
+{
+	int		max;
+
+	max = stack->val;
+	while (stack)
+	{
+		if (stack->val > max)
+			max = stack->val;
+		stack = stack->next;
+	}
+	return (max);
+}
+
+int			ft_med(t_stack *stack, int min, int max)
 {
 	int		m_min;
 	int		m_max;
-	int		i;
-	int		c;
+	int		count;
+	t_stack *tmp;
 
-	c = count;
-	while (count > 0)
+	tmp = stack;
+	count = 0;
+	while (stack && ++count)
+		stack = stack->next;
+	while (count > 0 && min != max)
 	{
 		m_min = max;
 		m_max = min;
-		i = 0;
-		while (i++ < c)
+		stack = tmp;
+		while (stack)
 		{
-			if (nbr[i] > m_max && nbr[i] < max)
-				m_max = nbr[i];
-			if (nbr[i] < m_min && nbr[i] > min)
-				m_min = nbr[i];
+			m_max = stack->val > m_max && stack->val < max ? stack->val : m_max;
+			m_min = stack->val < m_min && stack->val > min ? stack->val : m_min;
+			stack = stack->next;
 		}
 		min = m_min;
 		max = m_max;
@@ -103,110 +224,39 @@ int			ft_med(int *nbr, int count, int min, int max)
 	return ((min == max) ? min : (min + max) / 2);
 }
 
-int			ft_min(int *nbr, int count)
+t_stack		*sa(t_stack *stack)//верхние
 {
-	int		min;
-	int		i;
+	int		tmp;
 
-	i = -1;
-	min = nbr[0];
-	while (++i < count)
-		if (nbr[i] < min)
-			min = nbr[i];
-	return (min);
+	tmp = stack->val;
+	stack->val = stack->next->val;
+	stack->next->val = tmp;
+	write(1, "sa\n", 3);
+	return (stack);
 }
 
-int			ft_max(int *nbr, int count)
+t_stack		*ra(t_stack *stack, t_stack *last)// первый вниз
 {
-	int		max;
-	int		i;
+	t_stack	*tmp;
 
-	i = -1;
-	max = nbr[0];
-	while (++i < count)
-		if (nbr[i] > max)
-			max = nbr[i];
-	return (max);
+	tmp = stack->next;
+	last->next = stack;
+	stack->next->prev = NULL;
+	stack->prev = last;
+	stack->next = NULL;
+	write(1, "ra\n", 3);
+	return (tmp);
 }
 
-int			criteria(int *nbr, int *stack, int count, int count_stack)
+t_stack		*rra(t_stack *stack, t_stack *last)// последний вверх
 {
-	int		min;
-	int		max;
-	int		med;
-//	int		count_stack;
+	t_stack *tmp;
 
-//	count_stack = 0;
-	min = ft_min(nbr, count);
-	max = ft_max(nbr, count);
-	med = ft_med(nbr, count, min, max);
-	if (nbr[0] == max)
-		ra(nbr, count);
-	else if (nbr[count - 1] == min)
-		rra(nbr, count);
-	else if (nbr[0] > nbr[1] && nbr[0] <= med && nbr[count - 1] > nbr[1])
-		sa(nbr, count);
-	else if (nbr[0] > nbr[count - 1] && nbr[0] >= med)
-		ra(nbr, count);
-	else if (nbr[count - 1] <= med && nbr[count - 1] < nbr[0])
-		rra(nbr, count);
-	else if (if_sort(nbr, 1, count) == 0)
-	{
-		pa(nbr, stack, count, count_stack);
-		count_stack++;
-		printf("%d\n", stack[0]);
-	}
-	return (count_stack);
-}
-
-int			main(int argc, char **argv)
-{
-	int		i;
-	int		c;
-	int		nb;
-	int		*nbr;
-	int		*stack;
-	int		count_stack;
-
-	if (argc == 1)
-		return (0);
-	i = 0;
-	c = 0;
-	while (argv[1][i])
-	{
-		if (argv[1][i] >= '0' && argv[1][i] <= '9')
-		{
-			while (argv[1][i] >= '0' && argv[1][i] <= '9' && argv[1][i])
-				i++;
-			i--;
-			c++;
-		}
-		i++;
-	}
-	nbr = (int *)malloc(sizeof(int) * (c + 1));
-	stack = (int *)malloc(sizeof(int) * (c + 1));
-	i = 0;
-	c = 0;
-	while (argv[1][i])
-	{
-		if (argv[1][i] >= '0' && argv[1][i] <= '9')
-		{
-			nb = 0;
-			while (argv[1][i] >= '0' && argv[1][i] <= '9')
-			{
-				nb = nb * 10 + argv[1][i] - '0';
-				i++;
-			}
-			i--;
-			nbr[c] = nb;
-			c++;
-		}
-		i++;
-	}
-	count_stack = 0;
-	while ((count_stack = criteria(nbr, stack, c, count_stack) >= 0) && (i = -1) && printf("-\n"))
-		while (++i < c)
-			printf("%d\n", nbr[i]);
-	printf("\n%d\n", if_sort(nbr, 1, c));
-	return (0);
+	tmp = last;
+	stack->prev = last;
+	last->prev->next = NULL;
+	last->next = stack;
+	last->prev = NULL;
+	write(1, "rra\n", 4);
+	return (tmp);
 }
