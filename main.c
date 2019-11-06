@@ -6,45 +6,15 @@
 /*   By: djoye <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 10:59:49 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/05 18:57:49 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/06 18:51:40 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-/*int			pb(int *nbr, int *stack, int count, int count_stack)
-{
-	int		tmp;
-	int		i;
+/*
 
-	i = -1;
-	tmp = nbr[0];
-	while (++i < count - count_stack - 1)
-		nbr[i] = nbr[i + 1];
-	i = -1;
-	if (count_stack > 0)
-		while(++i < count_stack)
-			stack[i + 1] = stack[i];
-	stack[0] = tmp;
-	return (write(1, "pb\n", 3));
-}
 
-int			pa(int *nbr, int *stack, int count, int count_stack)
-{
-	int		tmp;
-	int		i;
-
-	i = -1;
-	tmp = stack[0];
-	while (++i < count_stack)
-		stack[i] = stack[i + 1];
-	i = -1;
-	if (count > 0)
-		while(++i < count - count_stack)
-			nbr[i + 1] = nbr[i];
-	nbr[0] = tmp;
-	return (write(1, "pa\n", 3));
-}
 
 int			criteria(int *nbr, int *stack, int count, int count_stack)
 {
@@ -99,10 +69,9 @@ int			main(int argc, char **argv)
 	int			i;
 	int			c;
 	int			nb;
-	int			count_stack;
 	t_stack		*stack;
 	t_stack		*last;
-	t_stack		*test;
+	t_head		*head;
 	int			min;
 	int			max;
 	int			med;
@@ -122,8 +91,10 @@ int			main(int argc, char **argv)
 			i--;
 			if (!stack)
 			{
+				head = (t_head*)malloc(sizeof(t_head));
 				stack = add_list(nb);
-				test = stack;
+				head->a = stack;
+				head->b = NULL;
 			}
 			else
 			{
@@ -138,17 +109,34 @@ int			main(int argc, char **argv)
 	last = stack;
 //	while (stack->prev)
 //		stack = stack->prev;
-	stack = test;
-	count_stack = 0;
+	head = pb(head);
+
+	head = pb(head);
+	head = pa(head);
+head = pa(head);
+
+
+	stack = head->a;
+
 	printf("%d sort\n", if_sort(stack, 0));
-	min = ft_min(stack);
-	max = ft_max(stack);
+	min = ft_min(head->a);
+	max = ft_max(head->a);
 	med = ft_med(stack, min, max);
 	printf("%d min %d max %d med\n", min, max, med);
-	stack = rra(stack, last);
+//	stack = rra(head->a, last);
+
+	stack = head->a;
 	while (stack)
 	{
-		printf("%d\n", stack->val);
+		printf("%d stack_a\n", stack->val);
+		stack = stack->next;
+	}
+	printf("\n");
+
+	stack = head->b;
+	while (stack)
+	{
+		printf("%d stack_b\n", stack->val);
 		stack = stack->next;
 	}
 /*	}
@@ -265,3 +253,66 @@ t_stack		*rra(t_stack *stack, t_stack *last)// последний вверх
 	write(1, "rra\n", 4);
 	return (tmp);
 }
+
+
+t_head		*pb(t_head *head)
+{
+	t_stack	*tmp;
+
+	if (head->b == NULL)
+	{
+		head->b = head->a;
+		head->a = head->a->next;
+		head->a->prev = NULL;
+		head->b->prev = NULL;
+		head->b->next = NULL;
+	}
+	else
+	{
+		tmp = head->a;
+		head->a = head->a->next;
+		head->a->prev = NULL;
+		tmp->next = head->b;
+		head->b->prev = tmp;
+		head->b = tmp;
+	}
+	write(1, "pb\n", 3);
+	return (head);
+}
+
+t_head		*pa(t_head *head)
+{
+	t_stack	*tmp;
+
+	tmp = head->b;
+	if (head->b->next)
+	{
+		head->b = head->b->next;
+		head->b->prev = NULL;
+	}
+	else
+		head->b = NULL;
+	tmp->next = head->a;
+	head->a->prev = tmp;
+	head->a = tmp;
+
+	write(1, "pa\n", 3);
+	return (head);
+}
+/*
+
+int			pa(int *nbr, int *stack, int count, int count_stack)
+{
+	int		tmp;
+	int		i;
+
+	i = -1;
+	tmp = stack[0];
+	while (++i < count_stack)
+		stack[i] = stack[i + 1];
+	i = -1;
+	if (count > 0)
+		while(++i < count - count_stack)
+			nbr[i + 1] = nbr[i];
+	nbr[0] = tmp;
+}*/
