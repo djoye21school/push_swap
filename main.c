@@ -3,61 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: djoye <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: djoye <djoye@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 10:59:49 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/06 18:51:40 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/09 14:46:43 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-/*
-
-
-
-int			criteria(int *nbr, int *stack, int count, int count_stack)
-{
-	int		min;
-	int		max;
-	int		med;
-
-	min = ft_min(nbr, count);
-	max = ft_max(nbr, count);
-	med = ft_med(nbr, count, min, max);
-	if (nbr[0] == max)
-		ra(nbr, count);
-	else if (nbr[count - 1] == min)
-		rra(nbr, count);
-	else if (nbr[0] > nbr[1] && nbr[0] < med && nbr[count - 1] > nbr[1])
-		sa(nbr, count);
-	else if (nbr[0] > nbr[count - 1] && nbr[0] > med)
-		ra(nbr, count);
-	else if (nbr[count - 1] < med && nbr[count - 1] < nbr[0])
-		rra(nbr, count);
-	else if (if_sort(nbr, 1, count) == 0)
-	{
-		pb(nbr, stack, count, count_stack);
-		count_stack++;
-		printf("%d \ntest pb\n", stack[0]);
-	}
-	else if (if_sort(nbr, 1, count) == 1 && count_stack > 0 && if_sort(stack, -1, count_stack) == 1)
-	{
-		pa(nbr, stack, count, count_stack);
-		count_stack--;
-		printf("%d \ntest pa\n", stack[0]);
-	}
-
-	return (count_stack);
-}
-*/
-
-t_stack		*add_list(int nb)
+t_stack		*add_data(int nb)
 {
 	t_stack	*stack;
 
-	stack = NULL;
-	stack = (t_stack *)malloc(sizeof(t_stack));
+	if (!(stack = (t_stack *)malloc(sizeof(t_stack))))
+		return (NULL);
 	stack->val = nb;
 	stack->prev = NULL;
 	stack->next = NULL;
@@ -67,14 +27,10 @@ t_stack		*add_list(int nb)
 int			main(int argc, char **argv)
 {
 	int			i;
-	int			c;
 	int			nb;
 	t_stack		*stack;
 	t_stack		*last;
 	t_head		*head;
-	int			min;
-	int			max;
-	int			med;
 
 	if (argc == 1)
 		return (0);
@@ -92,65 +48,45 @@ int			main(int argc, char **argv)
 			if (!stack)
 			{
 				head = (t_head*)malloc(sizeof(t_head));
-				stack = add_list(nb);
+				stack = add_data(nb);
 				head->a = stack;
 				head->b = NULL;
 			}
 			else
 			{
-				last = add_list(nb);
+				last = add_data(nb);
 				stack->next = last;
 				last->prev = stack;
-				stack = last;
+				stack = stack->next;
 			}
 		}
 		i++;
 	}
-	last = stack;
-//	while (stack->prev)
-//		stack = stack->prev;
-	head = pb(head);
+	head->a_last = stack;
+	while (if_sort(head->a, 1) == 0 || head->b != NULL)
+		head = criteria(head);
+	print_head(head);
+	return (0);
+}
 
-	head = pb(head);
-	head = pa(head);
-head = pa(head);
-
-
-	stack = head->a;
-
-	printf("%d sort\n", if_sort(stack, 0));
-	min = ft_min(head->a);
-	max = ft_max(head->a);
-	med = ft_med(stack, min, max);
-	printf("%d min %d max %d med\n", min, max, med);
-//	stack = rra(head->a, last);
-
-	stack = head->a;
-	while (stack)
+void		print_head(t_head *head)
+{
+	while (head->a)
 	{
-		printf("%d stack_a\n", stack->val);
-		stack = stack->next;
+		printf("%d stack_a\n", head->a->val);
+		head->a = head->a->next;
 	}
 	printf("\n");
-
-	stack = head->b;
-	while (stack)
+	while (head->b)
 	{
-		printf("%d stack_b\n", stack->val);
-		stack = stack->next;
+		printf("%d stack_b\n", head->b->val);
+		head->b = head->b->next;
 	}
-/*	}
-	while (if_sort(nbr, 1, c) == 0 ||
-	if_sort(stack, -1, count_stack) == 0 || count_stack != 0)
-	{
-	count_stack = criteria(nbr, stack, c, count_stack)
-//	printf("\n%d\n", if_sort(nbr, 1, c));*/
-	return (0);
 }
 
 int			if_sort(t_stack *stack, int route)
 {
-	while (stack->next)
+	while (stack && stack->next)
 	{
 		if (route == 1 ? stack->val > stack->next->val :
 				stack->next->val > stack->val)
@@ -217,43 +153,69 @@ int			ft_med(t_stack *stack, int min, int max)
 	return ((min == max) ? min : (min + max) / 2);
 }
 
-t_stack		*sa(t_stack *stack)//верхние
+t_stack		*sa(t_stack *stack)
 {
 	int		tmp;
 
 	tmp = stack->val;
 	stack->val = stack->next->val;
 	stack->next->val = tmp;
-	write(1, "sa\n", 3);
 	return (stack);
 }
 
-t_stack		*ra(t_stack *stack, t_stack *last)// первый вниз
+t_head		*ra(t_head *head)
 {
 	t_stack	*tmp;
 
-	tmp = stack->next;
-	last->next = stack;
-	stack->next->prev = NULL;
-	stack->prev = last;
-	stack->next = NULL;
-	write(1, "ra\n", 3);
-	return (tmp);
+	tmp = head->a->next;
+	head->a->next->prev = NULL;
+	head->a->next = NULL;
+	head->a_last->next = head->a;
+	head->a->prev = head->a_last;
+	head->a_last = head->a;
+	head->a = tmp;
+	return (head);
 }
 
-t_stack		*rra(t_stack *stack, t_stack *last)// последний вверх
+t_head		*rb(t_head *head)
 {
-	t_stack *tmp;
+	t_stack	*tmp;
 
-	tmp = last;
-	stack->prev = last;
-	last->prev->next = NULL;
-	last->next = stack;
-	last->prev = NULL;
-	write(1, "rra\n", 4);
-	return (tmp);
+	tmp = head->b->next;
+	head->b->next->prev = NULL;
+	head->b->next = NULL;
+	head->b_last->next = head->b;
+	head->b->prev = head->b_last;
+	head->b_last = head->b;
+	head->b = tmp;
+	return (head);
 }
 
+t_head		*rra(t_head *head)
+{
+	t_stack	*tmp;
+
+	tmp = head->a_last;
+	head->a_last->prev->next = NULL;
+	head->a_last = head->a_last->prev;
+	head->a->prev = tmp;
+	tmp->next = head->a;
+	head->a = tmp;
+	return (head);
+}
+
+t_head		*rrb(t_head *head)
+{
+	t_stack	*tmp;
+
+	tmp = head->b_last;
+	head->b_last->prev->next = NULL;
+	head->b_last = head->b_last->prev;
+	head->b->prev = tmp;
+	tmp->next = head->b;
+	head->b = tmp;
+	return (head);
+}
 
 t_head		*pb(t_head *head)
 {
@@ -261,11 +223,13 @@ t_head		*pb(t_head *head)
 
 	if (head->b == NULL)
 	{
+		head->a->next->prev = NULL;
+		head->a->prev = NULL;
 		head->b = head->a;
 		head->a = head->a->next;
-		head->a->prev = NULL;
 		head->b->prev = NULL;
 		head->b->next = NULL;
+		head->b_last = head->b;
 	}
 	else
 	{
@@ -276,7 +240,6 @@ t_head		*pb(t_head *head)
 		head->b->prev = tmp;
 		head->b = tmp;
 	}
-	write(1, "pb\n", 3);
 	return (head);
 }
 
@@ -287,32 +250,142 @@ t_head		*pa(t_head *head)
 	tmp = head->b;
 	if (head->b->next)
 	{
+		tmp = head->b;
 		head->b = head->b->next;
 		head->b->prev = NULL;
+		head->a->prev = tmp;
+		tmp->next = head->a;
+		head->a = tmp;
 	}
 	else
+	{
 		head->b = NULL;
-	tmp->next = head->a;
-	head->a->prev = tmp;
-	head->a = tmp;
-
-	write(1, "pa\n", 3);
+		tmp->next = head->a;
+		head->a->prev = tmp;
+		head->a = tmp;
+	}
 	return (head);
 }
-/*
 
-int			pa(int *nbr, int *stack, int count, int count_stack)
+t_head		*criteria(t_head *head)
 {
-	int		tmp;
-	int		i;
-
-	i = -1;
-	tmp = stack[0];
-	while (++i < count_stack)
-		stack[i] = stack[i + 1];
-	i = -1;
-	if (count > 0)
-		while(++i < count - count_stack)
-			nbr[i + 1] = nbr[i];
-	nbr[0] = tmp;
-}*/
+	if (head->a)
+	{
+		head->a_min = ft_min(head->a);
+		head->a_max = ft_max(head->a);
+		head->a_med = ft_med(head->a, head->a_min, head->a_max);
+	}
+	if (head->b)
+	{
+		head->b_min = ft_min(head->b);
+		head->b_max = ft_max(head->b);
+		head->b_med = ft_med(head->b, head->b_min, head->b_max);
+	}
+	if (head->a && head->b && head->a->next && head->b->next &&
+		((head->a->val == head->a_max && head->b->val == head->b_min) ||
+		(head->a->val > head->a_med && head->b->val < head->b_med)))
+	{
+		head = ra(head);
+		head = rb(head);
+		write(1, "rr\n", 3);
+	}
+	else if (head->a && head->b && head->a->next && head->b->next &&
+			((head->a_last->val == head->a_min &&
+			head->b_last->val == head->b_max) ||
+			(head->a_last->val < head->a_med &&
+			head->b_last->val > head->b_med)))
+	{
+		head = rra(head);
+		head = rrb(head);
+		write(1, "rrr\n", 4);
+	}
+	else if (head->a && head->b && head->a->next && head->b->next &&
+			head->a->val > head->a->next->val && head->a->val < head->a_med &&
+			head->b->val < head->b->next->val && head->b->val > head->b_med)
+	{
+		head->a = sa(head->a);
+		head->b = sa(head->b);
+		write(1, "ss\n", 3);
+	}
+	else if (head->a && head->a->next && head->a->val == head->a_max)
+	{
+		head = ra(head);
+		write(1, "ra\n", 3);
+	}
+	else if (head->b && head->b->next && head->b->val == head->b_min)
+	{
+		head = rb(head);
+		write(1, "rb\n", 3);
+	}
+	else if (head->a && head->a->next && head->a_last->val == head->a_min)
+	{
+		head = rra(head);
+		write(1, "rra\n", 4);
+	}
+	else if (head->b && head->b->next && head->b_last->val == head->b_max)
+	{
+		head = rrb(head);
+		write(1, "rrb\n", 4);
+	}
+	else if (head->a && head->a->next && head->a->val > head->a->next->val &&
+			head->a_last->val > head->a->next->val &&
+			head->a->val <= head->a_med)
+	{
+		head->a = sa(head->a);
+		write(1, "sa\n", 3);
+	}
+	else if (head->b && head->b->next && head->b->val < head->b->next->val &&
+			head->b_last->val < head->b->next->val &&
+			head->b->val >= head->b_med)
+	{
+		head->b = sa(head->b);
+		write(1, "sb\n", 3);
+	}
+	else if (head->a && head->a->next && head->a->val > head->a_last->val &&
+			head->a->val > head->a_med)
+	{
+		head = ra(head);
+		write(1, "ra\n", 3);
+	}
+	else if (head->b && head->b->next && head->b->val < head->b_last->val &&
+			head->b->val < head->b_med)
+	{
+		head = rb(head);
+		write(1, "rb\n", 3);
+	}
+	else if (head->a && head->a->next && head->a_last->val < head->a_med &&
+			head->a_last->val < head->a->val)
+	{
+		head = rra(head);
+		write(1, "rra\n", 4);
+	}
+	else if (head->b && head->b->next && head->b_last->val > head->b_med &&
+			head->b_last->val > head->b->val)
+	{
+		head = rrb(head);
+		write(1, "rrb\n", 4);
+	}
+	else if (head->a && head->a->next && head->a->val > head->a->next->val
+				&& head->a_last->val > head->a->next->val)
+	{
+		head->a = sa(head->a);
+		write(1, "sa\n", 3);
+	}
+	else if (head->b && head->b->next && head->b->val < head->b->next->val &&
+			head->b_last->val < head->b->next->val)
+	{
+		head->b = sa(head->b);
+		write(1, "sb\n", 3);
+	}
+	else if (head->a && !(if_sort(head->a, 1)))
+	{
+		head = pb(head);
+		write(1, "pb\n", 3);
+	}
+	else if (head->b)
+	{
+		head = pa(head);
+		write(1, "pa\n", 3);
+	}
+	return (head);
+}
