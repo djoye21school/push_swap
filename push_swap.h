@@ -6,7 +6,7 @@
 /*   By: djoye <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 13:10:09 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/09 14:56:14 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/09 19:04:33 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,12 @@ typedef struct		s_head
 	int				b_max;
 	int				b_med;
 }					t_head;
+
+typedef struct		s_act
+{
+	struct s_act	*next;
+	int				code;
+}					t_act;
 
 t_stack				*add_data(int nb);
 int					if_sort(t_stack *stack, int route);
