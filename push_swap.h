@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: djoye <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: djoye <djoye@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 13:10:09 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/09 19:04:33 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/12 18:34:19 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <fcntl.h>
+# include <sys/types.h>
+# include <sys/uio.h>
 
 typedef struct		s_stack
 {
@@ -44,6 +47,8 @@ typedef struct		s_act
 	int				code;
 }					t_act;
 
+t_head				*read_nb(int argc, char **argv);
+t_head				*add_list(int nb, t_head *head);
 t_stack				*add_data(int nb);
 int					if_sort(t_stack *stack, int route);
 int					ft_min(t_stack *stack);
