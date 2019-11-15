@@ -6,7 +6,7 @@
 /*   By: djoye <djoye@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:00:06 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/12 14:00:58 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/15 16:57:44 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,13 @@ t_stack		*add_data(int nb)
 	return (stack);
 }
 
-t_head		*add_list(int nb, t_head *head)
+t_head		*add_list(long nb, t_head *head)
 {
 	t_stack	*stack;
 	t_stack	*last;
 
-	if (!head)
+	if (!head && (head = (t_head*)malloc(sizeof(t_head))))
 	{
-		head = (t_head*)malloc(sizeof(t_head));
 		last = add_data(nb);
 		head->a = last;
 		head->b = NULL;
@@ -44,6 +43,13 @@ t_head		*add_list(int nb, t_head *head)
 		last->prev = stack;
 	}
 	head->a_last = last;
+	while (head->a->next)
+		if (nb == head->a->val)
+			return (NULL);
+		else
+			head->a = head->a->next;
+	while (head->a->prev)
+		head->a = head->a->prev;
 	return (head);
 }
 
@@ -60,17 +66,17 @@ t_head		*read_nb(int argc, char **argv)
 	c = 1;
 	while (c < argc && argv[c][i])
 	{
-		if ((argv[c][i] >= '0' && argv[c][i] <= '9') || argv[c][i] == '-')
-		{
-			nb = 0;
-			sgn = (argv[c][i] == '-' && ++i) ? -1 : 1;
-			while (argv[c][i] >= '0' && argv[c][i] <= '9')
-				nb = nb * 10 + argv[c][i++] - '0';
-			i--;
-			head = add_list((int)(nb * sgn), head);
-		}
-		i++;
-		if (argv[c][i] == '\0' && ++c < argc)
+		if (argv[c][i] != ' ' && !(argv[c][i] >= '0' && argv[c][i] <= '9') &&
+		!(argv[c][i] == '-' && argv[c][i + 1] >= '0' && argv[c][i + 1] <= '9'))
+			return (NULL);
+		nb = 0;
+		sgn = (argv[c][i] == '-' && ++i) ? -1 : 1;
+		while (argv[c][i] >= '0' && argv[c][i] <= '9')
+			nb = nb * 10 + argv[c][i++] - '0';
+		i -= (i && argv[c][i - 1] >= '0' && argv[c][i - 1] <= '9') ? 1 : 0;
+		if (nb * sgn != ((int)nb * sgn) || !(head = add_list(nb * sgn, head)))
+			return (NULL);
+		if (argv[c][++i] == '\0' && ++c < argc)
 			i = 0;
 	}
 	return (head);

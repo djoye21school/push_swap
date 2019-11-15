@@ -6,7 +6,7 @@
 /*   By: djoye <djoye@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/14 11:41:18 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/14 19:08:46 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/15 17:23:28 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,12 @@
 int			main(int argc, char **argv)
 {
 	t_head		*head;
-	int			i;
-	int			c;
 
-	i = 0;
-	c = 1;
-	if (argc == 1)
+	if (argc == 1 || !(head = read_nb(argc, argv)))
 		return (write(1, "Error\n", 6) - 6);
-	while (c < argc)
-	{
-		if (argv[c][i] != ' ' && argv[c][i] != '\t' &&
-				!(argv[c][i] >= '0' && argv[c][i] <= '9'))
-			return (write(1, "Error\n", 6) - 6);
-		i++;
-		if (argv[c][i] == '\0' && c++)
-			i = 0;
-	}
-	head = read_nb(argc, argv);
 	while (if_sort(head->a, 1) == 0 || head->b != NULL)
 		head = criteria(head);
-//	print_head(head);
+	print_head(head);
 	return (0);
 }
 
@@ -125,24 +111,24 @@ t_head		*criteria(t_head *head)
 		write(1, "sb\n", 3);
 	}
 	else if (head->a && head->a->next && head->a->val > head->a_last->val &&
-			head->a->val >= head->a_med)
+			head->a->val > head->a_med)
 	{
 		head = ra(head);
 		write(1, "ra\n", 3);
 	}
 	else if (head->b && head->b->next && head->b->val < head->b_last->val &&
-			head->b->val <= head->b_med)
+			head->b->val < head->b_med)
 	{
 		head = rb(head);
 		write(1, "rb\n", 3);
 	}
-	else if (head->a && head->a->next && head->a_last->val <= head->a_med &&
+	else if (head->a && head->a->next && head->a_last->val < head->a_med &&
 			head->a_last->val < head->a->val)
 	{
 		head = rra(head);
 		write(1, "rra\n", 4);
 	}
-	else if (head->b && head->b->next && head->b_last->val >= head->b_med &&
+	else if (head->b && head->b->next && head->b_last->val > head->b_med &&
 			head->b_last->val > head->b->val)
 	{
 		head = rrb(head);

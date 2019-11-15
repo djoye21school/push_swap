@@ -6,7 +6,7 @@
 /*   By: djoye <djoye@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/09 15:50:25 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/14 18:51:04 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/15 17:23:24 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,11 @@ int			main(int argc, char **argv)
 	int		i;
 	char	tmp[4];
 
+	i = -1;
 	if (argc == 1)
 		return (0);
-	i = -1;
-	head = read_nb(argc, argv);
+	if (!(head = read_nb(argc, argv)))
+		return (write(1, "Error\n", 6) - 6);
 	while (read(1, &buf, 1) && ++i >= 0)
 	{
 		if (buf == '\n' && (tmp[i] = '\0') >= 0)
