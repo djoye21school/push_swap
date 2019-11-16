@@ -98,20 +98,20 @@ echo "✅  - ./checker (action doesn't exist) (instr: none)"
 else
 echo "❌  - ./checker (action doesn't exist) (instr: none)"
 fi
-#printf "test 7: "
-#if [ "$(printf 'ra  ' | ./checker 4 1 2 2>&1 | grep "Error" | wc -l)" -eq 1 ]
-#then
-#echo "✅  - ./checker (action with two space after) (instr: none)"
-#else
-#echo "❌  - ./checker (action with two space after) (instr: none)"
-#fi
-#printf "test 8: "
-#if [ "$(printf '  ra' | ./checker 4 1 2 2>&1 | grep "Error" | wc -l)" -eq 1 ]
-#then
-#echo "✅  - ./checker (action with two space before) (instr: none)"
-#else
-#echo "❌  - ./checker (action with two space before) (instr: none)"
-#fi
+printf "test 7: "
+if [ "$(printf 'ra  ' | ./checker 4 1 2 2>&1 | grep "Error" | wc -l)" -eq 1 ]
+then
+echo "✅  - ./checker (action with two space after) (instr: none)"
+else
+echo "❌  - ./checker (action with two space after) (instr: none)"
+fi
+printf "test 8: "
+if [ "$(printf '  ra' | ./checker 4 1 2 2>&1 | grep "Error" | wc -l)" -eq 1 ]
+then
+echo "✅  - ./checker (action with two space before) (instr: none)"
+else
+echo "❌  - ./checker (action with two space before) (instr: none)"
+fi
 printf "test 9: "
 if [ "$(printf '' | ./checker - 2>&1 | grep "Error" | wc -l)" -eq 1 ]
 then
@@ -133,22 +133,22 @@ echo "✅  - ./checker (duplicate zeros) (instr: none)"
 else
 echo "❌  - ./checker (duplicate zeros) (instr: none)"
 fi
-#printf "test 12: "
-#if [ "$(printf '' | ./checker 18446744073709551616 2>&1 | grep "Error" | wc -l)" -eq 1 ]
-#then
-#echo "✅  - ./checker (int64_t double overloaded (to zero)) (instr: none)"
-#else
-#echo "❌  - ./checker (int64_t double overloaded (to zero)) (instr: none)"
-#fi
+printf "test 12: "
+if [ "$(printf '' | ./checker 18446744073709551616 2>&1 | grep "Error" | wc -l)" -eq 1 ]
+then
+echo "✅  - ./checker (int64_t double overloaded (to zero)) (instr: none)"
+else
+echo "❌  - ./checker (int64_t double overloaded (to zero)) (instr: none)"
+fi
 
 echo "\nFalse tests:"
-#printf "test 1: "
-#if [ "$(printf "sa\npb\nrrr" | ./checker 0 9 1 8 2 7 3 6 4 5  | grep "KO" | wc -l)" -eq 1 ]
-#then
-#echo "✅  - ./checker 0 9 1 8 2 7 3 6 4 5 (instr: sa pb rrr)"
-#else
-#echo "❌  - ./checker 0 9 1 8 2 7 3 6 4 5 (instr: sa pb rrr)"
-#fi
+printf "test 1: "
+if [ "$(printf "sa\npb\nrrr" | ./checker 0 9 1 8 2 7 3 6 4 5  | grep "KO" | wc -l)" -eq 1 ]
+then
+echo "✅  - ./checker 0 9 1 8 2 7 3 6 4 5 (instr: sa pb rrr)"
+else
+echo "❌  - ./checker 0 9 1 8 2 7 3 6 4 5 (instr: sa pb rrr)"
+fi
 printf "test 2: "
 if [ "$(printf "pb\nra\nsa\npa\nrb\nrrb\nrra\n" | ./checker 4 1 6 2 7 3 | grep "KO" | wc -l)" -eq 1 ]
 then

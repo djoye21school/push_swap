@@ -6,7 +6,7 @@
 /*   By: djoye <djoye@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/14 11:41:18 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/15 17:23:28 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/16 16:57:47 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@ int			main(int argc, char **argv)
 	t_head		*head;
 
 	if (argc == 1 || !(head = read_nb(argc, argv)))
-		return (write(1, "Error\n", 6) - 6);
+		exit (write(1, "Error\n", 6) - 6);
 	while (if_sort(head->a, 1) == 0 || head->b != NULL)
 		head = criteria(head);
-	print_head(head);
-	return (0);
+//	print_head(head);
+	exit (0);
 }
 
 void		print_head(t_head *head)

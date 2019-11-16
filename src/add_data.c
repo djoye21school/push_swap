@@ -6,7 +6,7 @@
 /*   By: djoye <djoye@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:00:06 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/15 16:57:44 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/16 16:57:49 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,11 @@ t_head		*add_list(long nb, t_head *head)
 
 t_head		*read_nb(int argc, char **argv)
 {
-	long	nb;
-	int		c;
-	int		i;
-	int		sgn;
-	t_head	*head;
+	long double	nb;
+	int			c;
+	int			i;
+	int			sgn;
+	t_head		*head;
 
 	i = 0;
 	head = NULL;
@@ -74,7 +74,8 @@ t_head		*read_nb(int argc, char **argv)
 		while (argv[c][i] >= '0' && argv[c][i] <= '9')
 			nb = nb * 10 + argv[c][i++] - '0';
 		i -= (i && argv[c][i - 1] >= '0' && argv[c][i - 1] <= '9') ? 1 : 0;
-		if (nb * sgn != ((int)nb * sgn) || !(head = add_list(nb * sgn, head)))
+		if ((long)(nb * sgn) != (int)(nb * sgn) || 
+		!(head = add_list((int)(nb * sgn), head)))
 			return (NULL);
 		if (argv[c][++i] == '\0' && ++c < argc)
 			i = 0;

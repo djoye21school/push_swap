@@ -6,7 +6,7 @@
 /*   By: djoye <djoye@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/09 15:50:25 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/15 17:23:24 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/16 16:57:44 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,21 +29,25 @@ t_head		*rotate(t_head *head, char *buf)
 	int		c;
 
 	c = 0;
-	if ((equ("ss", buf) || equ("sa", buf)) && head->a && head->a->next && ++c)
+	if ((equ("ss", buf) || equ("sa", buf)) && ++c && head->a && head->a->next)
 		sa(head->a);
-	if ((equ("ss", buf) || equ("sb", buf)) && head->b && head->b->next && ++c)
+	if ((equ("ss", buf) || equ("sb", buf)) && ++c && head->b && head->b->next)
 		sa(head->b);
-	if (equ("pa", buf) && head->b && ++c)
+	if (equ("pa", buf) && ++c && head->b)
 		pa(head);
-	if (equ("pb", buf) && head->a && ++c)
-		pb(head);
-	if ((equ("rr", buf) || equ("ra", buf)) && head->a && head->a->next && ++c)
+	if (equ("pb", buf) && ++c && head->a)
+		{
+			printf("%d| %s\n", c, buf);
+			pb(head);
+		}
+	
+	if ((equ("rr", buf) || equ("ra", buf)) && ++c && head->a && head->a->next )
 		ra(head);
-	if ((equ("rr", buf) || equ("rb", buf)) && head->b && head->b->next && ++c)
+	if ((equ("rr", buf) || equ("rb", buf)) && ++c && head->b && head->b->next)
 		rb(head);
-	if ((equ("rrr", buf) || equ("rra", buf)) && head->a && head->a->next && ++c)
+	if ((equ("rrr", buf) || equ("rra", buf)) && ++c && head->a && head->a->next)
 		rra(head);
-	if ((equ("rrr", buf) || equ("rrb", buf)) && head->b && head->b->next && ++c)
+	if ((equ("rrr", buf) || equ("rrb", buf)) && ++c && head->b && head->b->next)
 		rrb(head);
 	return (c == 0 ? NULL : head);
 }
@@ -55,29 +59,36 @@ int			main(int argc, char **argv)
 	int		i;
 	char	tmp[4];
 
-	i = -1;
+	i = 0;
 	if (argc == 1)
 		return (0);
 	if (!(head = read_nb(argc, argv)))
-		return (write(1, "Error\n", 6) - 6);
-	while (read(1, &buf, 1) && ++i >= 0)
+		exit (write(2, "Error\n", 6) - 6);
+	while (read(0, &buf, 1))
 	{
-		if (buf == '\n' && (tmp[i] = '\0') >= 0)
-		{
-			head = rotate(head, tmp);
-			i = -1;
+		if (buf == '\n')
+		 {
+			 tmp[i] = '\0';
+			 head = rotate(head, tmp);
+//			 if (head == NULL || i > 3)
+//			 	exit (write(2, "Error\n", 6) - 6);
+			i = 0;
+			tmp[i] = '\0';
 		}
 		else if (i < 4)
 			tmp[i] = buf;
+		i++;
 	}
+	if (tmp[0] != '\0')
+		head = rotate(head, tmp);
 	if (head == NULL || i > 3)
-		return (write(1, "error\n", 6) - 6);
+		exit (write(2, "Error\n", 6) - 6);
 	if (if_sort(head->a, 1) == 1 && head->b == NULL)
 		write(1, "OK\n", 3);
 	else
 		write(1, "KO\n", 3);
 //	print_head(head);
-	return (0);
+	exit (0);
 }
 
 void		print_head(t_head *head)
