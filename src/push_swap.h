@@ -6,7 +6,7 @@
 /*   By: djoye <djoye@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 13:10:09 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/15 15:50:13 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/17 18:32:39 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct		s_head
 	int				b_min;
 	int				b_max;
 	int				b_med;
+	int				width;
 }					t_head;
 
 typedef struct		s_act
@@ -50,6 +51,7 @@ typedef struct		s_act
 t_head				*read_nb(int argc, char **argv);
 t_head				*add_list(long nb, t_head *head);
 t_stack				*add_data(int nb);
+int					width(t_head *head);
 int					if_sort(t_stack *stack, int route);
 int					ft_min(t_stack *stack);
 int					ft_max(t_stack *stack);

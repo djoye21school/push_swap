@@ -6,7 +6,7 @@
 /*   By: djoye <djoye@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:00:06 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/16 16:57:49 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/17 18:37:32 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,12 @@ t_head		*add_list(long nb, t_head *head)
 		last->prev = stack;
 	}
 	head->a_last = last;
-	while (head->a->next)
-		if (nb == head->a->val)
+	last = head->a;
+	while (last->next)
+		if (nb == last->val)
 			return (NULL);
 		else
-			head->a = head->a->next;
-	while (head->a->prev)
-		head->a = head->a->prev;
+			last = last->next;
 	return (head);
 }
 
@@ -69,15 +68,15 @@ t_head		*read_nb(int argc, char **argv)
 		if (argv[c][i] != ' ' && !(argv[c][i] >= '0' && argv[c][i] <= '9') &&
 		!(argv[c][i] == '-' && argv[c][i + 1] >= '0' && argv[c][i + 1] <= '9'))
 			return (NULL);
-		nb = 0;
 		sgn = (argv[c][i] == '-' && ++i) ? -1 : 1;
+		nb = 0;
 		while (argv[c][i] >= '0' && argv[c][i] <= '9')
 			nb = nb * 10 + argv[c][i++] - '0';
-		i -= (i && argv[c][i - 1] >= '0' && argv[c][i - 1] <= '9') ? 1 : 0;
-		if ((long)(nb * sgn) != (int)(nb * sgn) || 
+		i -= (i && argv[c][i - 1] >= '0' && argv[c][i - 1] <= '9') ? 0 : 0;
+		if ((long)(nb * sgn) != (int)(nb * sgn) ||
 		!(head = add_list((int)(nb * sgn), head)))
 			return (NULL);
-		if (argv[c][++i] == '\0' && ++c < argc)
+		if (argv[c][i++] == '\0' && ++c < argc)
 			i = 0;
 	}
 	return (head);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   min_max_med.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: djoye <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: djoye <djoye@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/09 15:23:15 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/09 15:41:45 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/17 18:37:34 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,19 @@ int			ft_med(t_stack *stack, int min, int max)
 		count -= 2;
 	}
 	return ((min == max) ? min : (min + max) / 2);
+}
+
+int			width(t_head *head)
+{
+	int		i;
+	int		nb;
+
+	head->a_min = ft_min(head->a);
+	head->a_max = ft_max(head->a);
+	nb = head->a_max > -head->a_min ? head->a_max : head->a_min;
+	i = nb < 0 ? 1 : 0;
+	nb = nb < 0 ? -nb : nb;
+	while (nb && ++i)
+		nb = nb / 10;
+	return (i);
 }

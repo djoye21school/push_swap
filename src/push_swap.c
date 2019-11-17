@@ -6,7 +6,7 @@
 /*   By: djoye <djoye@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/14 11:41:18 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/16 16:57:47 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/17 19:06:05 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,24 +19,51 @@ int			main(int argc, char **argv)
 	if (argc == 1 || !(head = read_nb(argc, argv)))
 		exit (write(1, "Error\n", 6) - 6);
 	while (if_sort(head->a, 1) == 0 || head->b != NULL)
+	{
 		head = criteria(head);
-//	print_head(head);
+		head->width = width(head);
+		print_head(head);
+	}
 	exit (0);
+}
+
+void		print_stack(int nb, int width)
+{
+	char	arr[11];
+	int		i;
+
+	i = width;
+	arr[i] = '\0';
+	while(i--)
+		if (nb && (arr[i] = nb % 10 + '0'))
+			nb = nb / 10;
+		else arr[i] = ' ';
+	write (1, &arr, width);
 }
 
 void		print_head(t_head *head)
 {
-	while (head->a)
+	t_stack *a;
+	t_stack	*b;
+
+	a = head->a;
+	b = head->b;
+	while (a || b)
 	{
-		printf("%d stack_a\n", head->a->val);
-		head->a = head->a->next;
+		if (a)
+		{
+			print_stack(head->a->val, head->width);
+			a = a->next;
+		}
+		if (b)
+		{
+			print_stack(head->b->val, head->width);
+			b = b->next;
+		}
+		printf("\n");
 	}
-	write(1, "\n", 1);
-	while (head->b)
-	{
-		printf("%d stack_b\n", head->b->val);
-		head->b = head->b->next;
-	}
+	write(1, "_ | _\n", 6);
+	write(1, "a | b\n", 6);
 }
 
 t_head		*criteria(t_head *head)

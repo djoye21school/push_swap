@@ -6,7 +6,7 @@
 /*   By: djoye <djoye@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/09 15:50:25 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/16 16:57:44 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/17 12:44:37 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,7 @@ t_head		*rotate(t_head *head, char *buf)
 	if (equ("pa", buf) && ++c && head->b)
 		pa(head);
 	if (equ("pb", buf) && ++c && head->a)
-		{
-			printf("%d| %s\n", c, buf);
-			pb(head);
-		}
-	
+		pb(head);
 	if ((equ("rr", buf) || equ("ra", buf)) && ++c && head->a && head->a->next )
 		ra(head);
 	if ((equ("rr", buf) || equ("rb", buf)) && ++c && head->b && head->b->next)
@@ -70,9 +66,9 @@ int			main(int argc, char **argv)
 		 {
 			 tmp[i] = '\0';
 			 head = rotate(head, tmp);
-//			 if (head == NULL || i > 3)
-//			 	exit (write(2, "Error\n", 6) - 6);
-			i = 0;
+			 if (head == NULL || i > 3)
+			 	exit (write(2, "Error\n", 6) - 6);
+			i = -1;
 			tmp[i] = '\0';
 		}
 		else if (i < 4)
@@ -87,7 +83,7 @@ int			main(int argc, char **argv)
 		write(1, "OK\n", 3);
 	else
 		write(1, "KO\n", 3);
-//	print_head(head);
+	print_head(head);
 	exit (0);
 }
 
