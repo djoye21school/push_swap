@@ -6,11 +6,26 @@
 /*   By: djoye <djoye@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:00:06 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/17 18:37:32 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/18 20:48:02 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+int			width(t_head *head)
+{
+	int		i;
+	int		nb;
+
+	head->a_min = ft_min(head->a);
+	head->a_max = ft_max(head->a);
+	nb = head->a_max > -head->a_min ? head->a_max : head->a_min;
+	i = nb < 0 ? 1 : 0;
+	nb = nb < 0 ? -nb : nb;
+	while (nb && ++i)
+		nb = nb / 10;
+	return (i);
+}
 
 t_stack		*add_data(int nb)
 {
@@ -52,32 +67,31 @@ t_head		*add_list(long nb, t_head *head)
 	return (head);
 }
 
-t_head		*read_nb(int argc, char **argv)
+t_head		*read_nb(int argc, char **argv, int c)
 {
 	long double	nb;
-	int			c;
 	int			i;
 	int			sgn;
 	t_head		*head;
 
 	i = 0;
 	head = NULL;
-	c = 1;
 	while (c < argc && argv[c][i])
 	{
 		if (argv[c][i] != ' ' && !(argv[c][i] >= '0' && argv[c][i] <= '9') &&
 		!(argv[c][i] == '-' && argv[c][i + 1] >= '0' && argv[c][i + 1] <= '9'))
 			return (NULL);
 		sgn = (argv[c][i] == '-' && ++i) ? -1 : 1;
-		nb = 0;
-		while (argv[c][i] >= '0' && argv[c][i] <= '9')
-			nb = nb * 10 + argv[c][i++] - '0';
-		i -= (i && argv[c][i - 1] >= '0' && argv[c][i - 1] <= '9') ? 0 : 0;
-		if ((long)(nb * sgn) != (int)(nb * sgn) ||
-		!(head = add_list((int)(nb * sgn), head)))
-			return (NULL);
-		if (argv[c][i++] == '\0' && ++c < argc)
-			i = 0;
+		if (argv[c][i] >= '0' && argv[c][i] <= '9')
+		{
+			nb = 0;
+			while (argv[c][i] >= '0' && argv[c][i] <= '9')
+				nb = nb * 10 + argv[c][i++] - '0';
+			if ((long)(nb * sgn) != (int)(nb * sgn) ||
+			!(head = add_list((int)(nb * sgn), head)))
+				return (NULL);
+		}
+		i = (argv[c][i] == '\0' && ++c < argc) ? 0 : ++i;
 	}
 	return (head);
 }

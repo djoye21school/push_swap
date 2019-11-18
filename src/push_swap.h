@@ -6,7 +6,7 @@
 /*   By: djoye <djoye@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 13:10:09 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/17 18:32:39 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/18 16:13:13 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ typedef struct		s_act
 	int				code;
 }					t_act;
 
-t_head				*read_nb(int argc, char **argv);
+t_head				*read_nb(int argc, char **argv, int c);
 t_head				*add_list(long nb, t_head *head);
 t_stack				*add_data(int nb);
 int					width(t_head *head);
@@ -63,7 +63,7 @@ t_head				*rra(t_head *head);
 t_head				*rrb(t_head *head);
 t_head				*pb(t_head *head);
 t_head				*pa(t_head *head);
-t_head				*criteria(t_head *head);
+t_head				*criteria(t_head *head, int flag);
 void				print_head(t_head *head);
 
 #endif

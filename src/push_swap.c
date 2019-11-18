@@ -6,67 +6,49 @@
 /*   By: djoye <djoye@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/14 11:41:18 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/17 19:06:05 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/18 20:48:01 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int			main(int argc, char **argv)
+static int		equ(char const *s1, char const *s2)
+{
+	while (s1 && s2 && *s1 && s2 && *s1 == *s2)
+	{
+		s1++;
+		s2++;
+	}
+	if (s1 && s2 && *s1 == '\0' && *s2 == '\0')
+		return (1);
+	return (0);
+}
+
+int				main(int ac, char **av)
 {
 	t_head		*head;
+	int			flag;
 
-	if (argc == 1 || !(head = read_nb(argc, argv)))
-		exit (write(1, "Error\n", 6) - 6);
+	flag = (equ(av[1], "-v") || equ(av[1], "-vc") || equ(av[1], "-cv")
+	|| equ(av[1], "-c")) ? 2 : 1;
+	if (ac == 1 || !(head = read_nb(ac, av, flag)))
+		exit(write(1, "Error\n", 6) - 6);
+	head->width = width(head);
+//	if (equ(av[1], "-v") || equ(av[1], "-vc") || equ(av[1], "-cv"))
+		print_head(head);
 	while (if_sort(head->a, 1) == 0 || head->b != NULL)
 	{
-		head = criteria(head);
-		head->width = width(head);
-		print_head(head);
+		//if (equ(av[1], "-c") || equ(av[1], "-vc") || equ(av[1], "-cv"))
+			head = criteria(head, 1);
+		//else
+		//	head = criteria(head, 0);
+		//if (equ(av[1], "-v") || equ(av[1], "-vc") || equ(av[1], "-cv"))
+			print_head(head);
 	}
-	exit (0);
+	exit(0);
 }
 
-void		print_stack(int nb, int width)
-{
-	char	arr[11];
-	int		i;
-
-	i = width;
-	arr[i] = '\0';
-	while(i--)
-		if (nb && (arr[i] = nb % 10 + '0'))
-			nb = nb / 10;
-		else arr[i] = ' ';
-	write (1, &arr, width);
-}
-
-void		print_head(t_head *head)
-{
-	t_stack *a;
-	t_stack	*b;
-
-	a = head->a;
-	b = head->b;
-	while (a || b)
-	{
-		if (a)
-		{
-			print_stack(head->a->val, head->width);
-			a = a->next;
-		}
-		if (b)
-		{
-			print_stack(head->b->val, head->width);
-			b = b->next;
-		}
-		printf("\n");
-	}
-	write(1, "_ | _\n", 6);
-	write(1, "a | b\n", 6);
-}
-
-t_head		*criteria(t_head *head)
+t_head			*criteria(t_head *head, int c)
 {
 	if (head->a)
 	{
@@ -85,7 +67,7 @@ t_head		*criteria(t_head *head)
 	{
 		head = ra(head);
 		head = rb(head);
-		write(1, "rr\n", 3);
+		c == 1 ? write(1, "\x1b[1;33mrr\x1b[0m\n", 14) : write(1, "rr\n", 3);
 	}
 	else if (head->a && head->b && head->a->next && head->b->next &&
 			head->a_last->val <= head->a_med &&
@@ -93,7 +75,7 @@ t_head		*criteria(t_head *head)
 	{
 		head = rra(head);
 		head = rrb(head);
-		write(1, "rrr\n", 4);
+		c == 1 ? write(1, "\x1b[1;33mrrr\x1b[0m\n", 15) : write(1, "rrr\n", 4);
 	}
 	else if (head->a && head->b && head->a->next && head->b->next &&
 			head->a->val > head->a->next->val &&
@@ -101,87 +83,87 @@ t_head		*criteria(t_head *head)
 	{
 		head->a = sa(head->a);
 		head->b = sa(head->b);
-		write(1, "ss\n", 3);
+		c == 1 ? write(1, "\x1b[1;33mss\x1b[0m\n", 14) : write(1, "ss\n", 3);
 	}
 	else if (head->a && head->a->next && head->a->val == head->a_max)
 	{
 		head = ra(head);
-		write(1, "ra\n", 3);
+		c == 1 ? write(1, "\x1b[1;33mra\x1b[0m\n", 14) : write(1, "ra\n", 3);
 	}
 	else if (head->b && head->b->next && head->b->val == head->b_min)
 	{
 		head = rb(head);
-		write(1, "rb\n", 3);
+		c == 1 ? write(1, "\x1b[1;33mrb\x1b[0m\n", 14) : write(1, "rb\n", 3);
 	}
 	else if (head->a && head->a->next && head->a_last->val == head->a_min)
 	{
 		head = rra(head);
-		write(1, "rra\n", 4);
+		c == 1 ? write(1, "\x1b[1;33mrra\x1b[0m\n", 15) : write(1, "rra\n", 4);
 	}
 	else if (head->b && head->b->next && head->b_last->val == head->b_max)
 	{
 		head = rrb(head);
-		write(1, "rrb\n", 4);
+		c == 1 ? write(1, "\x1b[1;33mrrb\x1b[0m\n", 15) : write(1, "rrb\n", 4);
 	}
 	else if (head->a && head->a->next && head->a->val > head->a->next->val &&
 			head->a_last->val > head->a->next->val &&
 			head->a->val <= head->a_med)
 	{
 		head->a = sa(head->a);
-		write(1, "sa\n", 3);
+		c == 1 ? write(1, "\x1b[1;33msa\x1b[0m\n", 14) : write(1, "sa\n", 3);
 	}
 	else if (head->b && head->b->next && head->b->val < head->b->next->val &&
 			head->b_last->val < head->b->next->val &&
 			head->b->val >= head->b_med)
 	{
 		head->b = sa(head->b);
-		write(1, "sb\n", 3);
+		c == 1 ? write(1, "\x1b[1;33msb\x1b[0m\n", 14) : write(1, "sb\n", 3);
 	}
 	else if (head->a && head->a->next && head->a->val > head->a_last->val &&
 			head->a->val > head->a_med)
 	{
 		head = ra(head);
-		write(1, "ra\n", 3);
+		c == 1 ? write(1, "\x1b[1;33mra\x1b[0m\n", 14) : write(1, "ra\n", 3);
 	}
 	else if (head->b && head->b->next && head->b->val < head->b_last->val &&
 			head->b->val < head->b_med)
 	{
 		head = rb(head);
-		write(1, "rb\n", 3);
+		c == 1 ? write(1, "\x1b[1;33mrb\x1b[0m\n", 14) : write(1, "rb\n", 3);
 	}
 	else if (head->a && head->a->next && head->a_last->val < head->a_med &&
 			head->a_last->val < head->a->val)
 	{
 		head = rra(head);
-		write(1, "rra\n", 4);
+		c == 1 ? write(1, "\x1b[1;33mrra\x1b[0m\n", 15) : write(1, "rra\n", 4);
 	}
 	else if (head->b && head->b->next && head->b_last->val > head->b_med &&
 			head->b_last->val > head->b->val)
 	{
 		head = rrb(head);
-		write(1, "rrb\n", 4);
+		c == 1 ? write(1, "\x1b[1;33mrrb\x1b[0m\n", 15) : write(1, "rrb\n", 4);
 	}
 	else if (head->a && head->a->next && head->a->val > head->a->next->val
 				&& head->a_last->val > head->a->next->val)
 	{
 		head->a = sa(head->a);
-		write(1, "sa\n", 3);
+		c == 1 ? write(1, "\x1b[1;33msa\x1b[0m\n", 14) : write(1, "sa\n", 3);
 	}
 	else if (head->b && head->b->next && head->b->val < head->b->next->val &&
 			head->b_last->val < head->b->next->val)
 	{
 		head->b = sa(head->b);
-		write(1, "sb\n", 3);
+		c == 1 ? write(1, "\x1b[1;33msb\x1b[0m\n", 14) : write(1, "sb\n", 3);
 	}
 	else if (head->a && !(if_sort(head->a, 1)))
 	{
 		head = pb(head);
-		write(1, "pb\n", 3);
+		c == 1 ? write(1, "\x1b[1;33mpb\x1b[0m\n", 14) : write(1, "pb\n", 3);
 	}
 	else if (head->b)
 	{
 		head = pa(head);
-		write(1, "pa\n", 3);
+		c == 1 ? write(1, "\x1b[1;33mpa\x1b[0m\n", 14) : write(1, "pa\n", 3);
 	}
 	return (head);
 }
