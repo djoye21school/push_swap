@@ -6,7 +6,7 @@
 /*   By: djoye <djoye@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 15:31:41 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/18 13:41:18 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/19 15:01:58 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,18 @@ int			if_sort(t_stack *stack, int route)
 		stack = stack->next;
 	}
 	return (1);
+}
+
+int			ft_count(t_stack *stack)
+{
+	t_stack	*tmp;
+	int		i;
+
+	tmp = stack;
+	i = 0;
+	while (tmp && ++i)
+		tmp = tmp->next;
+	return (i);
 }
 
 int			ft_min(t_stack *stack)

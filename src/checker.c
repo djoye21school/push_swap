@@ -6,7 +6,7 @@
 /*   By: djoye <djoye@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/09 15:50:25 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/18 20:48:04 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/19 14:02:35 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ static t_head	*rotate(t_head *head, char *buf)
 
 	c = 0;
 	if ((equ("ss", buf) || equ("sa", buf)) && ++c && head->a && head->a->next)
-		sa(head->a);
+		head->a = sa(head->a);
 	if ((equ("ss", buf) || equ("sb", buf)) && ++c && head->b && head->b->next)
-		sa(head->b);
+		head->b = sa(head->b);
 	if (equ("pa", buf) && ++c && head->b)
 		pa(head);
 	if (equ("pb", buf) && ++c && head->a)
@@ -55,19 +55,18 @@ static t_head	*check(t_head *head)
 	char	tmp[4];
 
 	i = 0;
-	while (read(0, &buf, 1))
+	tmp[0] = '\0';
+	while (read(0, &buf, 1) > 0)
 	{
+		if (i < 4)
+			tmp[i] = (buf != '\n') ? buf : '\0';
 		if (buf == '\n')
 		{
-			tmp[i] = '\0';
-			head = rotate(head, tmp);
-			if (head == NULL || i > 3)
+			if ((head = rotate(head, tmp)) == NULL)
 				return (NULL);
 			i = -1;
-			tmp[i] = '\0';
+			tmp[0] = '\0';
 		}
-		else if (i < 4)
-			tmp[i] = buf;
 		i++;
 	}
 	if (tmp[0] != '\0')

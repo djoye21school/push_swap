@@ -6,7 +6,7 @@
 /*   By: djoye <djoye@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 13:10:09 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/18 16:13:13 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/19 15:01:19 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,10 @@ typedef struct		s_stack
 
 typedef struct		s_head
 {
+	int				count;
+	int				min;
+	int				med;
+	int				max;
 	struct s_stack	*a;
 	struct s_stack	*a_last;
 	int				a_min;
@@ -53,6 +57,7 @@ t_head				*add_list(long nb, t_head *head);
 t_stack				*add_data(int nb);
 int					width(t_head *head);
 int					if_sort(t_stack *stack, int route);
+int					ft_count(t_stack *stack);
 int					ft_min(t_stack *stack);
 int					ft_max(t_stack *stack);
 int					ft_med(t_stack *stack, int min, int max);

@@ -6,7 +6,7 @@
 /*   By: djoye <djoye@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 13:33:01 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/18 20:47:58 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/19 18:13:19 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ void				print_head(t_head *head)
 
 	a = head->a;
 	b = head->b;
-	if (!a && !b)
-		return ;
 	while (a || b)
 	{
 		print_stack(a ? a->val : 0, a, head->width);
