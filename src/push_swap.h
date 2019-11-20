@@ -6,7 +6,7 @@
 /*   By: djoye <djoye@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 13:10:09 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/19 15:01:19 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/20 13:05:37 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ typedef struct		s_stack
 typedef struct		s_head
 {
 	int				count;
+	int				color;
+	int				visio;
 	int				min;
 	int				med;
 	int				max;
