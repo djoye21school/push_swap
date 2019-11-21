@@ -6,7 +6,7 @@
 #    By: djoye <djoye@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/11/14 11:35:23 by djoye             #+#    #+#              #
-#    Updated: 2019/11/18 13:38:24 by djoye            ###   ########.fr        #
+#    Updated: 2019/11/21 20:13:02 by djoye            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,9 +22,9 @@ OBJ_PATH	=	./obj/
 
 OBJ_DIR		= 	obj
 
-CH_SRC		=	$(NAME_1).c actions.c actions_p.c add_data.c sort.c print_stack.c
+CH_SRC		=	$(NAME_1).c actions.c actions_p.c add_data.c sort.c print_stack.c strequ.c
 
-PS_SRC		=	$(NAME_2).c actions.c actions_p.c add_data.c sort.c print_stack.c
+PS_SRC		=	$(NAME_2).c actions.c actions_p.c add_data.c sort.c print_stack.c strequ.c algo.c
 
 CHC = $(addprefix $(OBJ_PATH), $(CH_SRC))
 

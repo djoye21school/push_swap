@@ -242,9 +242,8 @@ echo "\n💠 💠 💠 💠 💠 💠 💠 💠 💠 💠 💠 💠 💠 💠 �
 echo "\n\t\t\t 🤹🏻‍♀️  RANDOM VALUES TEST 🤹🏻‍♀️ \n"
 
 
-for ((i = 0; i < $count; i++))
-do
-ARG=`ruby -e "puts ($from..$to).to_a.shuffle.join(' ')"` ; res=$(./push_swap $ARG | wc -l)
+for ((i = 0; i < $count ; i++))
+do ARG=`ruby -e "puts ($from..$to).to_a.shuffle.join(' ')"` ; res=$(./push_swap $ARG | wc -l)
 if [ $dif -eq 100 ]
 then
 if [ $res -gt 1500 ]
@@ -273,11 +272,12 @@ echo "Test result on $from..$to randoms: \033[36m$res\033[m   5️⃣  ❕  5️
 let "sred += $res"
 fi
 elif [ $dif -eq 500 ]
+let "res = $res/2"
 then
 if [ $res -gt 11500 ]
 then
 echo "Test result on $from..$to randoms: \033[36m$res\033[m   0️⃣  ❕  5️⃣  ❗️"
-let "sred += $res"
+let "sred += ($res)"
 elif [ $res -gt 10000 ]
 then
 echo "Test result on $from..$to randoms: \033[36m$res\033[m   1️⃣  ❕  5️⃣     ✅"
@@ -288,8 +288,8 @@ echo "Test result on $from..$to randoms: \033[36m$res\033[m   2️⃣  ❕  5️
 let "sred += $res"
 elif [ $res -gt 7000 ]
 then
-echo "Test result on $from..$to randoms: \033[36m$res\033[m   3️⃣  ❕  5️⃣     ✅  ✅  ✅"
-let "sred += $res"
+	echo "Test result on $from..$to randoms: \033[36m$res\033[m   3️⃣  ❕  5️⃣     ✅  ✅  ✅"
+	let "sred += $res"
 elif [ $res -gt 5500 ]
 then
 echo "Test result on $from..$to randoms: \033[36m$res\033[m   4️⃣  ❕  5️⃣     ✅  ✅  ✅  ✅"

@@ -6,23 +6,11 @@
 /*   By: djoye <djoye@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/09 15:50:25 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/19 14:02:35 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/21 20:34:57 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
-static int		equ(char const *s1, char const *s2)
-{
-	while (s1 && s2 && *s1 && s2 && *s1 == *s2)
-	{
-		s1++;
-		s2++;
-	}
-	if (s1 && s2 && *s1 == '\0' && *s2 == '\0')
-		return (1);
-	return (0);
-}
 
 static t_head	*rotate(t_head *head, char *buf)
 {

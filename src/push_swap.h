@@ -6,7 +6,7 @@
 /*   By: djoye <djoye@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 13:10:09 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/20 13:05:37 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/21 20:13:52 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ typedef struct		s_stack
 typedef struct		s_head
 {
 	int				count;
-	int				color;
+	int				c;
 	int				visio;
 	int				min;
 	int				med;
@@ -70,7 +70,12 @@ t_head				*rra(t_head *head);
 t_head				*rrb(t_head *head);
 t_head				*pb(t_head *head);
 t_head				*pa(t_head *head);
-t_head				*criteria(t_head *head, int flag);
 void				print_head(t_head *head);
+int					equ(char const *s1, char const *s2);
+int					sort_lite(t_head *head);
+t_head				*sort_hard(t_head *head);
+t_head				*q_sort(t_head *head);
+int					compl(t_head *head);
+t_head				*refresh(t_head *head);
 
 #endif
