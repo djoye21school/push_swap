@@ -6,7 +6,7 @@
 /*   By: djoye <djoye@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/14 11:41:18 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/21 20:31:38 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/22 12:44:07 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,8 @@ int				main(int ac, char **av)
 	head = q_sort(head);
 	while (head->a && head->a->next && if_sort(head->a, 1) == 0)
 	{
-		if (head->b && head->a->next && head->b->next && (head = refresh(head))
-		&& !compl(head))
+		if (!(head->b && head->a->next && head->b->next &&
+		(head = refresh(head)) && compl(head)))
 			head = sort_hard(head);
 		if (head->visio)
 			print_head(head);

@@ -6,7 +6,7 @@
 /*   By: djoye <djoye@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:00:06 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/20 12:50:51 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/22 15:29:14 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ t_head		*add_list(long nb, t_head *head)
 	last = head->a;
 	while (last->next)
 		if (nb == last->val)
-			return (NULL);
+			exit(write(2, "Error\n", 6) - 6);
 		else
 			last = last->next;
 	return (head);
@@ -78,9 +78,6 @@ t_head		*read_nb(int argc, char **argv, int c)
 	head = NULL;
 	while (c < argc && argv[c][i])
 	{
-		if (argv[c][i] != ' ' && !(argv[c][i] >= '0' && argv[c][i] <= '9') &&
-		!(argv[c][i] == '-' && argv[c][i + 1] >= '0' && argv[c][i + 1] <= '9'))
-			return (NULL);
 		sgn = (argv[c][i] == '-' && ++i) ? -1 : 1;
 		if (argv[c][i] >= '0' && argv[c][i] <= '9')
 		{
@@ -89,8 +86,11 @@ t_head		*read_nb(int argc, char **argv, int c)
 				nb = nb * 10 + argv[c][i++] - '0';
 			if ((long)(nb * sgn) != (int)(nb * sgn) ||
 			!(head = add_list((int)(nb * sgn), head)))
-				return (NULL);
+				exit(write(2, "Error\n", 6) - 6);
 		}
+		if (argv[c][i] != ' ' && argv[c][i] != '\0' &&
+		!(argv[c][i] >= '0' && argv[c][i] <= '9'))
+			exit(write(2, "Error\n", 6) - 6);
 		i = (argv[c][i] == '\0' && ++c < argc) ? 0 : ++i;
 	}
 	return (head);

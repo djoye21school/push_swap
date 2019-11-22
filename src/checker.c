@@ -6,7 +6,7 @@
 /*   By: djoye <djoye@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/09 15:50:25 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/21 20:34:57 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/22 15:29:15 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ static t_head	*rotate(t_head *head, char *buf)
 		rra(head);
 	if ((equ("rrr", buf) || equ("rrb", buf)) && ++c && head->b && head->b->next)
 		rrb(head);
-	return (c == 0 ? NULL : head);
+	if (c == 0)
+		exit(write(2, "Error\n", 6) - 6);
+	return (head);
 }
 
 static t_head	*check(t_head *head)
@@ -51,7 +53,7 @@ static t_head	*check(t_head *head)
 		if (buf == '\n')
 		{
 			if ((head = rotate(head, tmp)) == NULL)
-				return (NULL);
+				exit(write(2, "Error\n", 6) - 6);
 			i = -1;
 			tmp[0] = '\0';
 		}
@@ -59,7 +61,9 @@ static t_head	*check(t_head *head)
 	}
 	if (tmp[0] != '\0')
 		head = rotate(head, tmp);
-	return (i > 3 ? NULL : head);
+	if (i > 3)
+		exit(write(2, "Error\n", 6) - 6);
+	return (head);
 }
 
 int				main(int argc, char **argv)
