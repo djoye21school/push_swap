@@ -6,7 +6,7 @@
 /*   By: djoye <djoye@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/09 15:50:25 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/22 15:29:15 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/23 17:05:28 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ static t_head	*rotate(t_head *head, char *buf)
 		rrb(head);
 	if (c == 0)
 		exit(write(2, "Error\n", 6) - 6);
+	if (head->visio)
+		print_head(head);
 	return (head);
 }
 
@@ -77,13 +79,11 @@ int				main(int argc, char **argv)
 	|| equ(argv[1], "-c")) ? 2 : 1;
 	if (!(head = read_nb(argc, argv, flag)))
 		exit(write(2, "Error\n", 6) - 6);
+	head->visio = (equ(argv[1], "-v") || equ(argv[1], "-vc") ||
+	equ(argv[1], "-cv")) ? 1 : 0;
+	head->width = width(head);
 	if (!(head = check(head)))
 		exit(write(2, "Error\n", 6) - 6);
 	write(1, (if_sort(head->a, 1) && head->b == NULL) ? "OK\n" : "KO\n", 3);
-	if (equ(argv[1], "-v") || equ(argv[1], "-vc") || equ(argv[1], "-cv"))
-	{
-		head->width = width(head);
-		print_head(head);
-	}
 	exit(0);
 }

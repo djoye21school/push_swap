@@ -75,12 +75,10 @@ class PsGui:
                                 text='frame rate = ' + str(self.speed),
                                 font=("monospace", 10))
         self.speedmeter.pack(side=LEFT)
-        
         self.totalcount = Label(self.statusframe,
-                text='- operations = ' + str(len(self.cmds)),
+                                text='- operations = ' + str(len(self.cmds)),
                                 font=("monospace", 10))
         self.totalcount.pack(side=LEFT)
-        
         self.draw_rectangles()
         self.launch()
 
