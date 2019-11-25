@@ -6,11 +6,35 @@
 /*   By: djoye <djoye@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 14:00:06 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/22 15:29:14 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/25 13:57:09 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+t_head		*add_attribut(t_head *head, int ac, char **av)
+{
+	int		flag;
+
+	flag = (ac > 1 && (equ(av[1], "-v") || equ(av[1], "-vc")
+	|| equ(av[1], "-c") || equ(av[1], "-cv"))) ? 2 : 1;
+	if (ac == 1 || !(head = read_nb(ac, av, flag)))
+		exit(write(1, "Error\n", 6) - 6);
+	head->visio = (equ(av[1], "-v") || equ(av[1], "-vc") ||
+	equ(av[1], "-cv")) ? 1 : 0;
+	head->c = (equ(av[1], "-c") || equ(av[1], "-vc") ||
+	equ(av[1], "-cv")) ? 1 : 0;
+	head->width = width(head);
+	head->count = ft_count(head->a);
+	head->min = ft_min(head->a);
+	head->max = ft_max(head->a);
+	head->med = ft_med(head->a, head->min, head->max);
+	head->a_med = ft_med(head->a, head->med, head->max);
+	head->b_med = ft_med(head->a, head->min, head->med);
+	if (head->visio)
+		print_head(head);
+	return (head);
+}
 
 int			width(t_head *head)
 {

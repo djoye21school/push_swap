@@ -6,7 +6,7 @@
 /*   By: djoye <djoye@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/05 13:10:09 by djoye             #+#    #+#             */
-/*   Updated: 2019/11/21 20:13:52 by djoye            ###   ########.fr       */
+/*   Updated: 2019/11/25 13:57:11 by djoye            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,9 @@ t_head				*sort_hard(t_head *head);
 t_head				*q_sort(t_head *head);
 int					compl(t_head *head);
 t_head				*refresh(t_head *head);
+t_head				*bal_sort(t_head *head);
+int					position(t_stack *stack, int nb);
+t_head				*algo(t_head *head);
+t_head				*add_attribut(t_head *head, int ac, char **av);
 
 #endif
